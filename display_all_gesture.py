@@ -27,6 +27,10 @@ for i in range(rows):
         k = label[j]
         img_path = "dataset/training_set/%s/%d.png" % (k, random.randint(1, 100))
         img = cv2.imread(img_path, 0)
+        text = np.zeros((64, 64))
+        cv2.putText(text, k, (20, 40),
+                cv2.FONT_HERSHEY_TRIPLEX, 1.5, (255, 255, 255))
+        img = np.hstack((text,img))
         if np.any(img == None):
             img = np.zeros((64, 64), dtype = np.uint8)
         if np.any(col_img == None):

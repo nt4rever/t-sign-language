@@ -34,7 +34,7 @@ classifier.add(Flatten())
 # Step 4 - Full Connection
 classifier.add(Dense(256, activation='relu'))
 classifier.add(Dropout(0.5))
-classifier.add(Dense(26, activation='softmax'))
+classifier.add(Dense(27, activation='softmax'))
 
 # Compiling The CNN
 classifier.compile(
@@ -71,9 +71,9 @@ model = classifier.fit_generator(
     validation_steps=6500
 )
 
-'''#Saving the model
+#Saving the model
 import h5py
-classifier.save('model.h5')'''
+classifier.save('model.h5')
 
 print(model.history.keys())
 # summarize history for accuracy

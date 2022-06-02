@@ -10,12 +10,12 @@ def nothing(x):
 
 
 image_x, image_y = 64, 64
-
 classifier = load_model('model.h5')
 
 
 def predictor():
-    test_image = image.load_img('./store/1.png', target_size=(64, 64))
+    test_image = image.load_img(
+        './store/1.png', target_size=(image_x, image_y))
     test_image = image.img_to_array(test_image)
     test_image = np.expand_dims(test_image, axis=0)
     result = classifier.predict(test_image)
@@ -23,6 +23,7 @@ def predictor():
     i = list(result[0]).index(max(result[0]))
     if max(result[0]) > 0:
         return label[i]
+    return "null"
 
 
 def label_model():
@@ -35,19 +36,23 @@ def label_model():
 cam = cv2.VideoCapture(0)
 
 cv2.namedWindow("Trackbars")
-
+cv2.resizeWindow("Trackbars", 300, 250)
 cv2.createTrackbar("L - H", "Trackbars", 0, 179, nothing)
-cv2.createTrackbar("L - S", "Trackbars", 0, 255, nothing)
-cv2.createTrackbar("L - V", "Trackbars", 0, 255, nothing)
+cv2.createTrackbar("L - S", "Trackbars", 21, 255, nothing)
+cv2.createTrackbar("L - V", "Trackbars", 2, 255, nothing)
 cv2.createTrackbar("U - H", "Trackbars", 179, 179, nothing)
 cv2.createTrackbar("U - S", "Trackbars", 255, 255, nothing)
 cv2.createTrackbar("U - V", "Trackbars", 255, 255, nothing)
 
-cv2.namedWindow("test")
+cv2.namedWindow("capture")
 
-img_counter = 0
-
+flag_capture = False
+img_name = "./store/1.png"
 img_text = ''
+temp = ''
+counter = 0
+sentence = ''
+
 while True:
     ret, frame = cam.read()
     frame = cv2.flip(frame, 1)
@@ -66,24 +71,45 @@ while True:
     imcrop = img[102:298, 427:623]
     hsv = cv2.cvtColor(imcrop, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
-
-    cv2.putText(frame, img_text, (30, 400),
+    full = cv2.imread('./store/full_gesture.jpg')
+    cv2.putText(frame, img_text, (30, 300),
                 cv2.FONT_HERSHEY_TRIPLEX, 1.5, (0, 255, 0))
-    cv2.imshow("test", frame)
+    cv2.putText(frame, sentence, (30, 400),
+                cv2.FONT_HERSHEY_TRIPLEX, 1.5, (0, 0, 255))
+    cv2.imshow("capture", frame)
     cv2.imshow("mask", mask)
+    cv2.imshow("full", full)
 
-    # if cv2.waitKey(1) == ord('c'):
+    if flag_capture:
+        save_img = cv2.resize(mask, (image_x, image_y))
+        cv2.imwrite(img_name, save_img)
+        img_text = predictor()
+        if temp == '' or img_text == temp:
+            counter += 1
+        else:
+            counter = 0
+        temp = img_text
 
-    img_name = "./store/1.png"
-    save_img = cv2.resize(mask, (image_x, image_y))
-    cv2.imwrite(img_name, save_img)
-    print("{} written!".format(img_name))
-    img_text = predictor()
-    print(img_text)
+        if counter > 30:
+            sentence = sentence+temp
+            temp = ''
+            counter = 0
 
-    if cv2.waitKey(1) == 27:
+    t = cv2.waitKey(1)
+    if t == ord('c'):
+        flag_capture = True
+        print("---------Start capture---------")
+    elif t == ord('s'):
+        flag_capture = False
+        print("---------Stop capture---------")
+    elif t == ord('r'):
+        sentence = ''
+    elif t == 32:
+        sentence = sentence+' '
+    elif t == 8:
+        sentence = sentence[:-1]
+    elif t == 27:
         break
-
 
 cam.release()
 cv2.destroyAllWindows()
