@@ -34,7 +34,7 @@ classifier.add(Flatten())
 # Step 4 - Full Connection
 classifier.add(Dense(256, activation='relu'))
 classifier.add(Dropout(0.5))
-classifier.add(Dense(27, activation='softmax'))
+classifier.add(Dense(2, activation='softmax'))
 
 # Compiling The CNN
 classifier.compile(
@@ -52,13 +52,13 @@ train_datagen = ImageDataGenerator(
 test_datagen = ImageDataGenerator(rescale=1./255)
 
 training_set = train_datagen.flow_from_directory(
-    'dataset/training_set',
+    'dataset_sentence/training_set',
     target_size=(64, 64),
     batch_size=32,
     class_mode='categorical')
 
 test_set = test_datagen.flow_from_directory(
-    'dataset/test_set',
+    'dataset_sentence/test_set',
     target_size=(64, 64),
     batch_size=32,
     class_mode='categorical')
@@ -73,7 +73,7 @@ model = classifier.fit_generator(
 
 #Saving the model
 import h5py
-classifier.save('model.h5')
+classifier.save('model_sentence.h5')
 
 print(model.history.keys())
 # summarize history for accuracy

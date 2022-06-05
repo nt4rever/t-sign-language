@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.responses import FileResponse
-from reconize_from_image import predictor, test_image
+from reconize_from_image import predictor, test_image, report, get_cm
 
 
 class Image(BaseModel):
@@ -29,16 +29,24 @@ app.add_middleware(
 @app.post("/predict")
 async def predict(image: Image):
     res = predictor(image.uri, image.l_h, image.l_s,
-                     image.l_v, image.u_h, image.u_s, image.u_v)
+                    image.l_v, image.u_h, image.u_s, image.u_v)
     return {"result": res}
 
 
 @app.post("/test")
 async def test(image: Image):
     i = test_image(image.uri, image.l_h, image.l_s,
-                     image.l_v, image.u_h, image.u_s, image.u_v)
+                   image.l_v, image.u_h, image.u_s, image.u_v)
     return {"image": i}
 
-@app.get("/exports")
-def get_file():
-    return FileResponse("store/test.png")
+
+@app.get("/gestures")
+async def get_file():
+    return FileResponse("store/full_gesture.jpg")
+
+
+@app.get("/report")
+async def get_report():
+    res = report()
+    cm = get_cm()
+    return {"data": res, "cm": cm}

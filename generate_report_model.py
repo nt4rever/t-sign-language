@@ -8,7 +8,7 @@ from glob import glob
 import cv2
 import os
 
-model = load_model('model.h5')
+model = load_model('model_v2.h5')
 
 def load_test_image():
     images_labels = []
