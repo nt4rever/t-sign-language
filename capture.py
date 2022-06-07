@@ -52,7 +52,7 @@ def capture_images(ges_no, ges_name):
     cv2.namedWindow("Trackbars")
 
     cv2.createTrackbar("L - H", "Trackbars", 0, 179, nothing)
-    cv2.createTrackbar("L - S", "Trackbars", 0, 255, nothing)
+    cv2.createTrackbar("L - S", "Trackbars", 21, 255, nothing)
     cv2.createTrackbar("L - V", "Trackbars", 0, 255, nothing)
     cv2.createTrackbar("U - H", "Trackbars", 179, 179, nothing)
     cv2.createTrackbar("U - S", "Trackbars", 255, 255, nothing)

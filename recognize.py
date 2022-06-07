@@ -92,7 +92,7 @@ while True:
             counter = 0
         temp = img_text
 
-        if counter > 30:
+        if counter > 20:
             sentence = sentence+temp
             temp = ''
             counter = 0
