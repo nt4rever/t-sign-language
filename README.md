@@ -16,7 +16,7 @@ Here, I have implemented CNN (Convolution Neural Network) using Keras.
     ```
 2. Now to test the model you just need to run recognise.py . To do so just open the terminal and run following command.
     ```
-    python recognise.py
+    python recognize.py
     ```
     Adjust the hsv values from the track bar to segment your hand color.
 
@@ -24,7 +24,10 @@ Here, I have implemented CNN (Convolution Neural Network) using Keras.
     ```
     python capture.py
     ```
-
+4. Run FastApi server.
+    ```
+    uvicorn api:app --host 0.0.0.0 --port 8000 --reload
+    ```
 
 
 

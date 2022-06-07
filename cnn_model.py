@@ -14,17 +14,17 @@ classifier = Sequential()
 
 # Step 1 - Convolutio Layer
 classifier.add(Convolution2D(
-    32, 3,  3, input_shape=(64, 64, 3), activation='relu'))
+    32, (3,  3), input_shape=(64, 64, 3), activation='relu'))
 
 # step 2 - Pooling
 classifier.add(MaxPooling2D(pool_size=(2, 2)))
 
 # Adding second convolution layer
-classifier.add(Convolution2D(32, 3,  3, activation='relu'))
+classifier.add(Convolution2D(32, (3,  3), activation='relu'))
 classifier.add(MaxPooling2D(pool_size=(2, 2)))
 
 # Adding 3rd Concolution Layer
-classifier.add(Convolution2D(64, 3,  3, activation='relu'))
+classifier.add(Convolution2D(64, (3,  3), activation='relu'))
 classifier.add(MaxPooling2D(pool_size=(2, 2)))
 
 
@@ -34,7 +34,7 @@ classifier.add(Flatten())
 # Step 4 - Full Connection
 classifier.add(Dense(256, activation='relu'))
 classifier.add(Dropout(0.5))
-classifier.add(Dense(2, activation='softmax'))
+classifier.add(Dense(30, activation='softmax'))
 
 # Compiling The CNN
 classifier.compile(
@@ -73,7 +73,7 @@ model = classifier.fit_generator(
 
 #Saving the model
 import h5py
-classifier.save('model_sentence.h5')
+classifier.save('model.h5')
 
 print(model.history.keys())
 # summarize history for accuracy

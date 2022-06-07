@@ -1,11 +1,13 @@
-import cv2, os, random
+import cv2, os, random, sqlite3
 import numpy as np
 
 def label_model():
-    folder = './dataset/training_set'
-    sub_folders = [name for name in os.listdir(
-        folder) if os.path.isdir(os.path.join(folder, name))]
-    return sub_folders
+    conn = sqlite3.connect("./store/database/gesture.db")
+    cursor = conn.execute("SELECT g_id, g_name from gesture")
+    labels = []
+    for row in cursor:
+        labels.append(row[1])
+    return labels
 
 gestures = os.listdir('dataset/training_set')
 if len(gestures)%5 != 0:
@@ -25,11 +27,11 @@ for i in range(rows):
         if j>len(gestures)-1:
             j = j -len(gestures)
         k = label[j]
-        img_path = "dataset/training_set/%s/%d.png" % (k, random.randint(1, 100))
+        img_path = "dataset/training_set/%s/%d.png" % (j, random.randint(1, 100))
         img = cv2.imread(img_path, 0)
         text = np.zeros((64, 64))
         cv2.putText(text, k, (20, 40),
-                cv2.FONT_HERSHEY_TRIPLEX, 1.5, (255, 255, 255))
+                cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 255))
         img = np.hstack((text,img))
         if np.any(img == None):
             img = np.zeros((64, 64), dtype = np.uint8)

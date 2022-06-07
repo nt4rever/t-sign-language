@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.responses import FileResponse
-from reconize_from_image import predictor, test_image, report, get_cm
+from recognize_api import predictor, test_image, report, get_cm
 
 
 class Image(BaseModel):
