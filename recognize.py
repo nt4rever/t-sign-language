@@ -10,7 +10,7 @@ def nothing(x):
 
 
 image_x, image_y = 64, 64
-classifier = load_model('./store/model/model_v3.h5')
+classifier = load_model('./store/model/model.h5')
 
 
 def predictor():
