@@ -61,7 +61,7 @@ def capture_images(ges_no, ges_name):
     for loop in listImage:
         while True:
 
-            ret, frame = cam.read()
+            _, frame = cam.read()
             frame = cv2.flip(frame, 1)
 
             l_h = cv2.getTrackbarPos("L - H", "Trackbars")
@@ -87,8 +87,8 @@ def capture_images(ges_no, ges_name):
             cv2.imshow("test", frame)
             cv2.imshow("mask", mask)
             cv2.imshow("result", result)
-
-            if cv2.waitKey(1) == ord('c'):
+            t = cv2.waitKey(1)
+            if t == ord('c'):
 
                 if t_counter <= 350:
                     img_name = "./dataset/training_set/" + \
@@ -113,7 +113,7 @@ def capture_images(ges_no, ges_name):
                     t_counter = 1
                 img_counter += 1
 
-            elif cv2.waitKey(1) == 27:
+            elif t == 27:
                 break
 
         if test_set_image_name > 250:
