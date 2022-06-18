@@ -11,7 +11,6 @@ classifier = load_model('./store/model/model_v3.h5')
 
 def predictor(path, l_h, l_s, l_v, u_h, u_s, u_v):
     img = readb64(path)
-    img = readb64(path)
     lower_blue = np.array([l_h, l_s, l_v])
     upper_blue = np.array([u_h, u_s, u_v])
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
