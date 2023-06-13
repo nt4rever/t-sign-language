@@ -4,10 +4,15 @@ import numpy as np
 from keras.models import load_model
 from helper import load_labels, IMAGE_SIZE, MODEL_PATH, DB_PATH
 
+# demo/video/alphabet.avi
+# webcam: 0
+
 cap = cv2.VideoCapture("../demo/video/alphabet.avi")
+# media pipe
 detector = HandDetector(maxHands=1)
+
 OFFSET = 30
-# get width x height value of video input
+# get width height value of video input
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 # load model that already training
@@ -65,6 +70,7 @@ while True:
             handCrop = imgOrigin[startPoint[1]:endPoint[1], startPoint[0]:endPoint[0]]
             # convert this image to HSV and threshold
             hsv = cv2.cvtColor(handCrop, cv2.COLOR_BGR2HSV)
+            # [0,60,2] -> [179,255,255]
             mask = cv2.inRange(hsv, lower_blue, upper_blue)
             result_mask_bgr = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
 
@@ -78,10 +84,11 @@ while True:
             print(confidence_score)
             img_text = label_names[predicted_index]
             cv2.imshow("hand", result_mask_bgr)
-            # put predict result onto screen
-            cv2.putText(imgOrigin, f"{img_text}", (startPoint[0] + 10, startPoint[1] + 30),
-                        cv2.FONT_HERSHEY_TRIPLEX, 1,
-                        (0, 255, 0))
+            # put predict result onto screen (if confidence score > 0.9)
+            if confidence_score > 0.9:
+                cv2.putText(imgOrigin, f"{img_text}", (startPoint[0] + 10, startPoint[1] + 30),
+                            cv2.FONT_HERSHEY_TRIPLEX, 1,
+                            (0, 255, 0))
             # draw rectangle that contain hand gesture
             imgOrigin = cv2.rectangle(imgOrigin, startPoint, endPoint,
                                       (0, 255, 0), thickness=2, lineType=8, shift=0)
