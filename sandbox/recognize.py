@@ -3,6 +3,7 @@ from keras.models import load_model
 import sqlite3
 import cv2
 import numpy as np
+import random
 
 
 def nothing(x):
@@ -10,7 +11,7 @@ def nothing(x):
 
 
 image_x, image_y = 64, 64
-classifier = load_model('../store/model/model_v3.h5')
+classifier = load_model('../store/model/model_base.h5')
 
 
 def predictor():
@@ -42,15 +43,15 @@ cam = cv2.VideoCapture(0)
 frame_width = int(cam.get(3))
 frame_height = int(cam.get(4))
 size = (frame_width, frame_height)
-import random
-result = cv2.VideoWriter(f'demo/filename-{random.random()}.avi',
+
+result = cv2.VideoWriter(f'../demo/filename-{random.randint(1000, 5000)}.avi',
                          cv2.VideoWriter_fourcc(*'MJPG'),
-                         10, size)
+                         20, size)
 
 cv2.namedWindow("Trackbars")
 cv2.resizeWindow("Trackbars", 300, 250)
 cv2.createTrackbar("L - H", "Trackbars", 0, 179, nothing)
-cv2.createTrackbar("L - S", "Trackbars", 21, 255, nothing)
+cv2.createTrackbar("L - S", "Trackbars", 35, 255, nothing)
 cv2.createTrackbar("L - V", "Trackbars", 2, 255, nothing)
 cv2.createTrackbar("U - H", "Trackbars", 179, 179, nothing)
 cv2.createTrackbar("U - S", "Trackbars", 255, 255, nothing)
@@ -59,7 +60,7 @@ cv2.createTrackbar("U - V", "Trackbars", 255, 255, nothing)
 cv2.namedWindow("capture")
 
 flag_capture = False
-img_name = "./store/1.png"
+img_name = "../store/1.png"
 img_text = ''
 temp = ''
 counter = 0
@@ -85,7 +86,7 @@ while True:
     imcrop = img[102:298, 427:623]
     hsv = cv2.cvtColor(imcrop, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
-    full = cv2.imread('./store/full_gesture.jpg')
+    full = cv2.imread('../store/full_gesture.jpg')
     cv2.putText(frame, img_text, (425, 90), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 255, 0))
     cv2.putText(frame, sentence, (30, 50), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 0, 255))
     cv2.imshow("capture", frame)
@@ -102,8 +103,8 @@ while True:
             counter = 0
         temp = img_text
 
-        if counter > 30:
-            sentence = sentence+temp
+        if counter > 40:
+            sentence = sentence + temp
             temp = ''
             counter = 0
 
@@ -117,7 +118,7 @@ while True:
     elif t == ord('r'):
         sentence = ''
     elif t == 32:
-        sentence = sentence+' '
+        sentence = sentence + ' '
     elif t == 8:
         sentence = sentence[:-1]
     elif t == 27:

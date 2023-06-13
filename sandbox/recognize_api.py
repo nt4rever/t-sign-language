@@ -6,7 +6,7 @@ import cv2
 import base64
 import json
 
-classifier = load_model('../store/model/model_v3.h5')
+classifier = load_model('../store/model/model_base.h5')
 
 
 def predictor(path, l_h, l_s, l_v, u_h, u_s, u_v):

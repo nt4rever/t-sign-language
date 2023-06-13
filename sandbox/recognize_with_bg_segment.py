@@ -2,7 +2,7 @@ from keras.models import load_model
 from cvzone.SelfiSegmentationModule import SelfiSegmentation
 import cv2
 import numpy as np
-from helper import load_labels, IMAGE_SIZE, MODEL_PATH, DB_PATH
+from app.helper import load_labels, IMAGE_SIZE, MODEL_PATH, DB_PATH
 
 # load model that already training
 model = load_model(MODEL_PATH)
@@ -11,7 +11,7 @@ label_names = load_labels(DB_PATH)
 # create segmentor to remove background
 segmentor = SelfiSegmentation()
 # capture video from webcam
-cap = cv2.VideoCapture("../demo/kitu.avi")
+cap = cv2.VideoCapture(0)
 
 is_capture = False
 img_text = ''
@@ -21,7 +21,7 @@ counter = 0
 
 while True:
     _, frame = cap.read()
-    # frame = cv2.flip(frame, 1)
+    frame = cv2.flip(frame, 1)
 
     # draw an area zone to recognize gesture
     img = cv2.rectangle(frame, (425, 100), (625, 300),

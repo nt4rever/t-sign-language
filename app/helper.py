@@ -2,7 +2,7 @@ import sqlite3
 
 # constant
 IMAGE_SIZE = 64
-MODEL_PATH = "../store/model/model_v3.h5"
+MODEL_PATH = "../store/model/model_base.h5"
 DB_PATH = "../store/database/gesture.db"
 
 
