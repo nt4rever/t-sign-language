@@ -33,6 +33,7 @@ cv2.createTrackbar("L - V", "Trackbars", 2, 255, nothing)
 cv2.createTrackbar("U - H", "Trackbars", 179, 179, nothing)
 cv2.createTrackbar("U - S", "Trackbars", 255, 255, nothing)
 cv2.createTrackbar("U - V", "Trackbars", 255, 255, nothing)
+full = cv2.imread('../store/full_gesture.jpg')
 
 while True:
     l_h = cv2.getTrackbarPos("L - H", "Trackbars")
@@ -64,7 +65,7 @@ while True:
                 startPoint = (x - OFFSET, y - padding - OFFSET)
                 endPoint = (startPoint[0] + w + 2 * OFFSET, startPoint[1] + w + 2 * OFFSET)
             if startPoint[0] < 0 or startPoint[1] < 0 or endPoint[0] > frame_width or endPoint[1] > frame_height:
-                continue
+                raise Exception()
 
             # crop image that contains hand gesture
             handCrop = imgOrigin[startPoint[1]:endPoint[1], startPoint[0]:endPoint[0]]
@@ -88,12 +89,18 @@ while True:
             if confidence_score > 0.9:
                 cv2.putText(imgOrigin, f"{img_text}", (startPoint[0] + 10, startPoint[1] + 30),
                             cv2.FONT_HERSHEY_TRIPLEX, 1,
-                            (0, 255, 0))
+                            (245, 219, 153))
             # draw rectangle that contain hand gesture
             imgOrigin = cv2.rectangle(imgOrigin, startPoint, endPoint,
-                                      (0, 255, 0), thickness=2, lineType=8, shift=0)
-        finally:
+                                      (245, 219, 153), thickness=2, lineType=8, shift=0)
+        except:
+            if cv2.getWindowProperty("hand", cv2.WND_PROP_VISIBLE) > 0:
+                cv2.destroyWindow("hand")
             pass
+    else:
+        if cv2.getWindowProperty("hand", cv2.WND_PROP_VISIBLE) > 0:
+            cv2.destroyWindow("hand")
 
+    cv2.imshow("full gesture", full)
     cv2.imshow("app", imgOrigin)
     cv2.waitKey(1)

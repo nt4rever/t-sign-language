@@ -1,0 +1,5 @@
+export const TAB_CHANGE = 'TAB_CHANGE'
+export const IMAGE_CHANGE = 'IMAGE_CHANGE'
+export const RES_CHANGE = 'RES_CHANGE'
+export const OPTION_CHANGE = 'OPTION_CHANGE'
+export const REPORT_CHANGE = 'REPORT_CHANGE'

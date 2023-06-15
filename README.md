@@ -11,23 +11,25 @@ Here, I have implemented CNN (Convolution Neural Network) using Keras.
 6. Scikit-learn
 7. Matplotlib
 
+### Dataset
+https://www.kaggle.com/datasets/tanvilla/asl-dataset
 ### Running this project
 1. Install Python 3, Opencv 4, Tensorflow, Keras...
 2. First Train the model.
     ```
-    python cnn_model.py
-    ```
+   app/training-tsign.ipynb
+   ```
 2. Now to test the model you just need to run recognise.py . To do so just open the terminal and run following command.
     ```
-    python recognize.py
+    python app/recognize.py
     ```
     Adjust the hsv values from the track bar to segment your hand color.
 
 3. To create your own data set.
     ```
-    python capture.py
+    python app/capture.py
     ```
 4. Run FastApi server.
     ```
-    uvicorn api:app --host 0.0.0.0 --port 8000 --reload
+    python app/api.py
     ```
